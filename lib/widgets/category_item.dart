@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import './category_recipes_screen.dart';
+import '../screens/category_recipes_screen.dart';
 
 class CategoryItem extends StatelessWidget {
   final String id;
@@ -14,12 +14,8 @@ class CategoryItem extends StatelessWidget {
       splashColor: Theme.of(context).primaryColor,
       borderRadius: BorderRadius.circular(15),
       onTap: () {
-        // Navigator.push(
-        //   context,
-        //   MaterialPageRoute(
-        //       builder: (context) => CategoryRecipesScreen(this.id, this.title)),
-        // );
-        Navigator.pushNamed(context, CategoryRecipesScreen.ROUTENAME,
+        final route = CategoryRecipesScreen.ROUTENAME;
+        Navigator.pushNamed(context, route,
             arguments: {"id": id, "title": title});
       },
       child: Container(

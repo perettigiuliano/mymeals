@@ -1,12 +1,51 @@
 import 'package:flutter/material.dart';
-import './category_recipes_screen.dart';
-import './categories_screen.dart';
+
+import 'dummy_data.dart';
+import 'models/recipe.dart';
+import 'screens/filters_screen.dart';
+import 'screens/tabs_screen.dart';
+import 'screens/recipe_detail_screen.dart';
+import 'screens/category_recipes_screen.dart';
 
 void main() {
   runApp(MyApp());
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
+  @override
+  _MyAppState createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  Map<String, bool> _filters = {
+    "gluten": false,
+    "vegan": false,
+    "vegetarian": false,
+    "lactose": false,
+  };
+  List<Recipe> availableRecipes = DUMMY_RECIPES;
+
+  void setFilters(Map<String, bool> userFilters) {
+    setState(() {
+      _filters = userFilters;
+      availableRecipes = DUMMY_RECIPES.where((element) {
+        if (_filters["gluten"] && !element.isGlutenFree) {
+          return false;
+        }
+        if (_filters["vegan"] && !element.isVegan) {
+          return false;
+        }
+        if (_filters["vegetarian"] && !element.isVegetarian) {
+          return false;
+        }
+        if (_filters["lactose"] && !element.isLactoseFree) {
+          return false;
+        }
+        return true;
+      }).toList();
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -20,15 +59,17 @@ class MyApp extends StatelessWidget {
             bodyText2: TextStyle(color: Color.fromRGBO(20, 51, 51, 1)),
             bodyText1: TextStyle(color: Color.fromRGBO(20, 51, 51, 1)),
             headline6: TextStyle(
-                color: Colors.white,
+                // color: Colors.white,
                 fontSize: 22,
                 fontFamily: "RobotoCondensed",
                 fontWeight: FontWeight.bold)),
       ),
-      // home: CategoriesScreen(),
       routes: {
-        "/": (_) => CategoriesScreen(),
-        CategoryRecipesScreen.ROUTENAME: (_) => CategoryRecipesScreen(),
+        "/": (_) => TabsScreen(),
+        CategoryRecipesScreen.ROUTENAME: (_) =>
+            CategoryRecipesScreen(availableRecipes),
+        RecipeDetailScreen.ROUTENAME: (_) => RecipeDetailScreen(),
+        FiltersScreen.ROUTENAME: (_) => FiltersScreen(setFilters, _filters),
       },
     );
   }
