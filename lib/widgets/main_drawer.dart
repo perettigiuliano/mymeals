@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mymeals/screens/favs_screen.dart';
 import 'package:mymeals/screens/filters_screen.dart';
 
 class MainDrawer extends StatelessWidget {
@@ -45,6 +46,7 @@ class MainDrawer extends StatelessWidget {
             height: 20,
           ),
           drawerItem(context, "Recipes", Icons.restaurant, "/"),
+          drawerItem(context, "Favs", Icons.star, FavsScreen.ROUTENAME),
           drawerItem(
               context, "Settings", Icons.settings, FiltersScreen.ROUTENAME),
         ],

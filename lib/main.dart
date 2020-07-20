@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mymeals/screens/favs_screen.dart';
 
 import 'dummy_data.dart';
 import 'models/recipe.dart';
@@ -70,6 +71,7 @@ class _MyAppState extends State<MyApp> {
             CategoryRecipesScreen(availableRecipes),
         RecipeDetailScreen.ROUTENAME: (_) => RecipeDetailScreen(),
         FiltersScreen.ROUTENAME: (_) => FiltersScreen(setFilters, _filters),
+        FavsScreen.ROUTENAME: (_) => FavsScreen(),
       },
     );
   }

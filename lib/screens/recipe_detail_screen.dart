@@ -1,13 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:mymeals/models/recipe.dart';
+import 'package:mymeals/screens/favs_screen.dart';
 
 import '../dummy_data.dart';
 
 enum SectionBodyType { Ingredients, Steps }
 
-class RecipeDetailScreen extends StatelessWidget {
+class RecipeDetailScreen extends StatefulWidget {
   static const ROUTENAME = "/recipe-detail-screen";
+
+  @override
+  _RecipeDetailScreenState createState() => _RecipeDetailScreenState();
+}
+
+class _RecipeDetailScreenState extends State<RecipeDetailScreen> {
   Recipe _recipe;
+  Color _favColor = Colors.black38;
 
   Widget sectionBodyIngredients(int index) {
     return Card(
@@ -47,9 +55,6 @@ class RecipeDetailScreen extends StatelessWidget {
     int itemCount = type == SectionBodyType.Ingredients
         ? _recipe.ingredients.length
         : _recipe.steps.length;
-    // List<String> data = type == sectionBodyType.Ingredients
-    //     ? _recipe.ingredients
-    //     : _recipe.steps;
     return Container(
       decoration: BoxDecoration(
           color: Colors.white,
@@ -81,12 +86,26 @@ class RecipeDetailScreen extends StatelessWidget {
     _recipe = DUMMY_RECIPES.firstWhere((element) {
       return element.id.contains(routeArgs["id"]);
     });
+    _favColor = FavsScreen.checkFav(_recipe.id);
     return Scaffold(
       appBar: AppBar(
         title: Text(
           _recipe.title,
           // style: Theme.of(context).textTheme.headline6,
         ),
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(
+              Icons.star,
+              color: _favColor,
+            ),
+            onPressed: () {
+              setState(() {
+                _favColor = FavsScreen.addFav(_recipe.id);
+              });
+            },
+          )
+        ],
       ),
       body: SingleChildScrollView(
         child: Column(
